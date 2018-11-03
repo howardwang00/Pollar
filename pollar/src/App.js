@@ -4,6 +4,8 @@ import firebase from './firebase.js';
 
 import LoginView from './LoginView.js';
 import DashboardView from './DashboardView.js';
+import EditPollView from './EditPollView.js';
+import VotePollView from './VotePollView.js';
 
 class App extends Component {
   constructor() {
@@ -26,9 +28,17 @@ class App extends Component {
       return(
         <DashboardView/>
       )
+    } else if(this.state.currentView === 2) {
+      return(
+        <EditPollView/>
+      )
+    } else if(this.state.currentView === 3) {
+      return(
+        <VotePollView/>
+      )
     }
   }
-
+     
   render() {
     return (
       <div>
