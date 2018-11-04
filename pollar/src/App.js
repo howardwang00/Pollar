@@ -17,35 +17,48 @@ class App extends Component {
 
     this.segueToLoginView = this.segueToLoginView.bind(this);
     this.segueToDashboardView = this.segueToDashboardView.bind(this);
+    this.signInWithGoogle = this.signInWithGoogle.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
 
   }
 
   signInWithGoogle = () => {
-    console.log("Logging in to Firebase");
-    firebase.auth().signInWithPopup(googleProvider).then(function(result) {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = result.credential.accessToken;
-      // The signed-in user info.
-      //var user = result.user;
-
-      this.segueToDashboardView();
-    }).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    });
     if(firebase.auth().currentUser) {
-      console.log('Logged In');
+      console.log('Already Logged In');
       this.segueToDashboardView();
+    } else {
+      console.log("Logging in to Firebase");
+      firebase.auth().signInWithPopup(googleProvider).then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        //var user = result.user;
+
+        console.log("Seguing to DashboardView");
+        this.segueToDashboardView();
+        console.log("Logged In");
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+
+        console.log(error);
+      });
     }
+  }
+
+  signOut = () => {
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+    }).catch(function(error) {
+      // An error happened.
+    });
   }
 
   segueToLoginView() {

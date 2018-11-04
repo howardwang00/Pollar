@@ -1,5 +1,7 @@
 import React from 'react';
 
+import firebase from './firebase.js';
+
 import './LoginView.css';
 
 import googleButton from './btn_google_light_normal_ios.svg';
@@ -10,6 +12,13 @@ class LoginView extends React.Component {
 
     this.state = {};
 
+  }
+
+  componentWillMount() {
+    if(firebase.auth().currentUser) {
+      console.log('Already Signed In, Seguing to DashboardView');
+      this.props.segueToDashboardView();
+    }
   }
 
   render() {
